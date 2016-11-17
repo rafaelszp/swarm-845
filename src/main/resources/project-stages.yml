@@ -1,0 +1,28 @@
+application:
+  name: getinapp-ms
+swarm:
+  port:
+    offset: 1999
+
+logger:
+  level: DEBUG
+  category: com.example
+
+jdbc:
+  driver:
+    module: com.h2database.h2
+    class: org.h2.Driver
+    xa-class: org.h2.Driver
+
+datasource:
+  name: getinApp-ds
+
+database:
+  connection:
+    url: jdbc:h2:mem:getinapp-database
+    username: sa
+    password: sa
+
+---
+project:
+  stage: development
