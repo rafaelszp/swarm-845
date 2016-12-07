@@ -4,9 +4,10 @@
 
 1) Main.java:22
 - Context won't change, I checked jboss-web.xml and it isnt reflecting swarm.context.path from project-stages.yml
-
+- Workaround: use setContextRoot method from JAXRSArchive, like Main.java:21
 2) pom.xml:100
 - If I use cdi fraction this app will break after running main method. 
+- Workaround: Uncomment pom.xml from 100-106 lines, and comment 107-110 lines
 
     - Error:
             
