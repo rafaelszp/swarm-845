@@ -1,4 +1,4 @@
-package sp.rafael.swarm845;
+package sp.rafael.swarmerror;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

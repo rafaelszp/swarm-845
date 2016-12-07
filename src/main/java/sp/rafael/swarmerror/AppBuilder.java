@@ -1,11 +1,11 @@
-package sp.rafael.swarm845;
+package sp.rafael.swarmerror;
 
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
+import org.wildfly.swarm.undertow.UndertowFraction;
 
 import java.io.File;
 import java.net.URL;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by rafaelszp on 10/6/16.
  */
-public class SwarmTool {
+public class AppBuilder {
 
 
     private List<Package> packages;
@@ -23,8 +23,10 @@ public class SwarmTool {
     private List<Class> classResources;
     private List<String> resources;
     private Swarm swarm;
+    private HTTPSCertificate certificate;
+    private JAXRSArchive deployment;
 
-    public SwarmTool(){
+    public AppBuilder(){
         System.setProperty("java.util.logging.manager","org.jboss.logmanager.LogManager");
         packages = new ArrayList<>();
         webInfResources = new ArrayList<>();
@@ -32,75 +34,97 @@ public class SwarmTool {
         resources = new ArrayList<>();
     }
 
-    public SwarmTool addPackage(Package pkg){
+    public AppBuilder addPackage(Package pkg){
         packages.add(pkg);
         return this;
     }
 
-    public SwarmTool addPackages(List<Package> pkgs){
+    public AppBuilder addPackages(List<Package> pkgs){
         packages.addAll(pkgs);
         return this;
     }
 
-    public SwarmTool addWebInfResource(String wir){
+    public AppBuilder addWebInfResource(String wir){
         webInfResources.add(wir);
         return this;
     }
 
-    public SwarmTool addWebInfResources(List<String> wirs){
+    public AppBuilder addWebInfResources(List<String> wirs){
         webInfResources.addAll(wirs);
         return this;
     }
 
-    public SwarmTool addClass(Class cls){
+    public AppBuilder addClass(Class cls){
         classResources.add(cls);
         return this;
     }
 
-    public SwarmTool addClasses(List<Class> classes){
+    public AppBuilder addClasses(List<Class> classes){
         classResources.addAll(classes);
         return this;
     }
 
-    public SwarmTool addResource(String res){
+    public AppBuilder addResource(String res){
         resources.add(res);
         return this;
     }
 
-    public SwarmTool addResource(List<String> resources){
+    public AppBuilder addResource(List<String> resources){
         resources.addAll(resources);
         return this;
     }
 
-    public SwarmTool comResourcesPadrao(){
+    public AppBuilder withDefaultResources(){
         return this.addWebInfResource("src/main/webapp/WEB-INF/beans.xml")
                 .addResource("META-INF/persistence.xml")
                 .addResource("project-stages.yml");
     }
 
-    public Archive criarDeployment() throws Exception {
-        JAXRSArchive deployment = ShrinkWrap.create( JAXRSArchive.class );
-        packages.forEach(p->deployment.addPackages(true,p));
-        webInfResources.forEach(res -> deployment.addAsWebInfResource(new File(res)));
-        classResources.forEach(cls -> deployment.addResource(cls));
-        resources.forEach(r ->{
-            deployment.addAsWebInfResource(new ClassLoaderAsset(r,SwarmTool.class.getClassLoader()),"classes/"+r);
-        });
+    public AppBuilder withSSL(HTTPSCertificate cert){
+        this.certificate = cert;
+        swarm.fraction(UndertowFraction.createDefaultFraction(cert.getKeystorePath(),
+                cert.getPassword(),cert.getAlias()));
+        return this;
+    }
 
-        deployment.addAllDependencies();
+    public JAXRSArchive getDeployment() {
         return deployment;
     }
 
-    public Swarm criarSwarm() throws Exception {
-        ClassLoader cl = SwarmTool.class.getClassLoader();
+    public AppBuilder createDeployment() throws Exception {
+        this.deployment = ShrinkWrap.create( JAXRSArchive.class );
+        packages.forEach(p->this.deployment.addPackages(true,p));
+        webInfResources.forEach(res -> this.deployment.addAsWebInfResource(new File(res)));
+        classResources.forEach(cls -> this.deployment.addResource(cls));
+        resources.forEach(r ->{
+            this.deployment.addAsWebInfResource(new ClassLoaderAsset(r,AppBuilder.class.getClassLoader()),"classes/"+r);
+        });
+
+        this.deployment.addAllDependencies();
+        return this;
+    }
+
+
+
+    public AppBuilder createContainer() throws Exception {
+        ClassLoader cl = AppBuilder.class.getClassLoader();
         String stageConfig = cl.getResource("project-stages.yml").getFile();
-        swarm = new Swarm(false).withStageConfig(new URL("file://"+stageConfig));
-        swarm.fraction(datasource());
-        return swarm;
+        this.swarm = new Swarm(false).withStageConfig(new URL("file://"+stageConfig));
+        this.swarm.fraction(datasource());
+        return this;
     }
 
     public Swarm getSwarm() {
         return swarm;
+    }
+
+    public void startAndDeploy() {
+        try {
+            this.swarm.start();
+            this.swarm.deploy(this.deployment);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected ClassLoader getClassLoader(){

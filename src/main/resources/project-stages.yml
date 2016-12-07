@@ -1,12 +1,15 @@
 application:
   name: getinapp-ms
 swarm:
+  context:
+    path: /swarm-error
   port:
     offset: 1999
 
 logger:
   level: DEBUG
   category: com.example
+
 
 jdbc:
   driver:
