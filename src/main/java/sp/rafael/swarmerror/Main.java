@@ -18,7 +18,7 @@ public class Main {
                 .withSSL(new HTTPSCertificate("keystore.jks","changeit","swarm-error-app"))
                 .getDeployment();
         //WHY DO I NEED TO DO THIS? Otherwise context wont change
-        deployment.setContextRoot(appBuilder.getSwarm().stageConfig().resolve("swarm.context.path").getValue());
+//        deployment.setContextRoot(appBuilder.getSwarm().stageConfig().resolve("swarm.context.path").getValue());
         appBuilder.startAndDeploy();
     }
 }

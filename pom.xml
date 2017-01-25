@@ -14,7 +14,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <jtds.version>1.3.1</jtds.version>
-        <version.wildfly.swarm>2016.12.0</version.wildfly.swarm>
+        <version.wildfly.swarm>2017.1.1</version.wildfly.swarm>
         <deltaspike.version>1.7.1</deltaspike.version>
         <gyntools-rest.version>0.1.0</gyntools-rest.version>
         <gyntools-test.version>0.1.0</gyntools-test.version>
@@ -98,16 +98,16 @@
             <artifactId>jaxrs</artifactId>
         </dependency>
 <!--IF I UNCOMMENT cdi-api AND COMMENT CDI FRACTION, THE PROJECT WILL BREAK when trying to run-->
-       <!-- <dependency>
+        <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <version>1.2</version>
             <scope>provided</scope>
-        </dependency>-->
-        <dependency>
+        </dependency>
+       <!-- <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>cdi</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>jpa</artifactId>
