@@ -1,4 +1,4 @@
-package sp.rafael.swarmerror;
+package sp.rafael.swarmexample;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

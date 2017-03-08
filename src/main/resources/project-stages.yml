@@ -3,13 +3,29 @@ application:
 swarm:
   context:
     path: /swarm-error
-  port:
-    offset: 1999
-
-logger:
-  level: DEBUG
-  category: com.example
-
+  ds:
+      name: swarm-example-ds
+      username: sa
+      password: sa
+      connection:
+          url: jdbc:h2:mem:application-database
+#  logging:
+#      file-handlers:
+#        swarm_example_handler:
+#          append: true
+#          enabled: true
+#          encoding: UTF-8
+#          level: ALL
+#          file:
+#            path: "application.log"
+#          named-formatter: COLOR_PATTERN
+#      loggers:
+#        swarm_example_logger:
+#          category: "sp.rafael.swarmexample"
+#          use-parent-handlers: true
+#          level: TRACE
+#          handlers:
+#            - swarm_example_handler
 
 jdbc:
   driver:
@@ -17,14 +33,14 @@ jdbc:
     class: org.h2.Driver
     xa-class: org.h2.Driver
 
-datasource:
-  name: getinApp-ds
+#datasource:
+#  name: getinApp-ds
 
-database:
-  connection:
-    url: jdbc:h2:mem:getinapp-database
-    username: sa
-    password: sa
+#database:
+#  connection:
+#    url: jdbc:h2:mem:getinapp-database
+#    username: sa
+#    password: sa
 
 ---
 project:

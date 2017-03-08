@@ -1,4 +1,4 @@
-package sp.rafael.swarmerror;
+package sp.rafael.swarmexample;
 
 /**
  * Created by rafaelszp on 9/21/16.

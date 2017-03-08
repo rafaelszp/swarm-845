@@ -1,4 +1,4 @@
-package sp.rafael.swarmerror;
+package sp.rafael.swarmexample;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
