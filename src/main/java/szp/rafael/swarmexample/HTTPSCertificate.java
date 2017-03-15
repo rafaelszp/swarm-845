@@ -1,4 +1,4 @@
-package sp.rafael.swarmexample;
+package szp.rafael.swarmexample;
 
 /**
  * Created by rafaelszp on 9/21/16.

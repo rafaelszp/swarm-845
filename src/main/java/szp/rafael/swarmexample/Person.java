@@ -1,4 +1,4 @@
-package sp.rafael.swarmexample;
+package szp.rafael.swarmexample;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,14 +1,19 @@
 application:
-  name: getinapp-ms
+  name: swarm-example-ms
+
+
 swarm:
   context:
-    path: /swarm-error
-  ds:
-      name: swarm-example-ds
-      username: sa
-      password: sa
-      connection:
-          url: jdbc:h2:mem:application-database
+    path: /swarm-example
+
+
+#I commented lines below in order to reproduce jaxrs-multipart problems
+#  ds:
+#      name: swarm-example-ds
+#      username: sa
+#      password: sa
+#      connection:
+#          url: jdbc:h2:mem:application-database
 #  logging:
 #      file-handlers:
 #        swarm_example_handler:
@@ -33,14 +38,14 @@ jdbc:
     class: org.h2.Driver
     xa-class: org.h2.Driver
 
-#datasource:
-#  name: getinApp-ds
+datasource:
+  name: swarm-example-ds
 
-#database:
-#  connection:
-#    url: jdbc:h2:mem:getinapp-database
-#    username: sa
-#    password: sa
+database:
+  connection:
+    url: jdbc:h2:mem:swarm-example-database
+    username: sa
+    password: sa
 
 ---
 project:

@@ -1,4 +1,4 @@
-package sp.rafael.swarmexample;
+package szp.rafael.swarmexample;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;

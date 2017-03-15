@@ -1,0 +1,2 @@
+insert into PERSON(PERSON_ID,PERSON_NAME) values(1,'TEST PERSON 01');
+insert into PERSON(PERSON_ID,PERSON_NAME) values(2,'TEST PERSON 02');

@@ -1,4 +1,4 @@
-package sp.rafael.swarmexample;
+package szp.rafael.swarmexample;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

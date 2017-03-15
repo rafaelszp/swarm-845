@@ -1,8 +1,9 @@
-package sp.rafael.swarmexample;
+package szp.rafael.swarmexample;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
 import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.datasources.DatasourcesFraction;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.undertow.UndertowFraction;
@@ -126,7 +127,7 @@ public class AppBuilder {
 
 	LoggingFraction loggingFraction = new LoggingFraction();
 	this.swarm.fraction(loggingFraction.applyDefaults());
-//	this.swarm.fraction(datasource(this.swarm));
+	this.swarm.fraction(datasource());
 	return this;
   }
 
@@ -148,21 +149,21 @@ public class AppBuilder {
 	return this.getClass().getClassLoader();
   }
 
-//  protected DatasourcesFraction datasource(Swarm swarm) {
-//	String module = swarm.stageConfig().resolve("jdbc.driver.module").getValue();
-//	String datasource = swarm.stageConfig().resolve("datasource.name").getValue();
-//	return new DatasourcesFraction()
-//			.jdbcDriver(module, (d) -> {
-//			  d.driverClassName(swarm.stageConfig().resolve("jdbc.driver.class").getValue());
-//			  d.xaDatasourceClass(swarm.stageConfig().resolve("jdbc.driver.xa-class").getValue());
-//			  d.driverModuleName(module);
-//			})
-//			.dataSource(datasource, (ds) -> {
-//			  ds.driverName(module);
-//			  ds.connectionUrl(swarm.stageConfig().resolve("database.connection.url").getValue());
-//			  ds.userName(swarm.stageConfig().resolve("database.connection.username").getValue());
-//			  ds.password(swarm.stageConfig().resolve("database.connection.password").getValue());
-//			});
-//  }
+  public DatasourcesFraction datasource() {
+	String module = swarm.stageConfig().resolve("jdbc.driver.module").getValue();
+	String datasource = swarm.stageConfig().resolve("datasource.name").getValue();
+	return new DatasourcesFraction()
+			.jdbcDriver(module, (d) -> {
+			  d.driverClassName(swarm.stageConfig().resolve("jdbc.driver.class").getValue());
+			  d.xaDatasourceClass(swarm.stageConfig().resolve("jdbc.driver.xa-class").getValue());
+			  d.driverModuleName(module);
+			})
+			.dataSource(datasource, (ds) -> {
+			  ds.driverName(module);
+			  ds.connectionUrl(swarm.stageConfig().resolve("database.connection.url").getValue());
+			  ds.userName(swarm.stageConfig().resolve("database.connection.username").getValue());
+			  ds.password(swarm.stageConfig().resolve("database.connection.password").getValue());
+			});
+  }
 
 }
